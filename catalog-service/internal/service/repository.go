@@ -6,5 +6,5 @@ import (
 )
 
 type repo interface {
-	GetCatalog(ctx context.Context, userId int) ([]models.Item, error)
+	GetCatalog(ctx context.Context) ([]models.Item, error)
 }

@@ -5,10 +5,10 @@ import (
 	"context"
 )
 
-func (r *repository) GetCatalog(ctx context.Context, userId int) ([]models.Item, error) {
-	query := `SELECT id, name, price, image_url FROM catalog WHERE user_id = $1`
+func (r *repository) GetCatalog(ctx context.Context) ([]models.Item, error) {
+	query := `SELECT id, name, price, image_url FROM catalog`
 
-	rows, err := r.db.QueryContext(ctx, query, userId)
+	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
 	}
