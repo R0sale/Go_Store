@@ -6,9 +6,9 @@ import (
 )
 
 func (r *repository) GetCatalog(ctx context.Context, userId int) ([]models.Item, error) {
-	query := `SELECT id, name, price, imageURL FROM catalog WHERE user_id = ?`
+	query := `SELECT id, name, price, image_url FROM catalog WHERE user_id = $1`
 
-	rows, err := r.db.QueryContext(ctx, query, &userId)
+	rows, err := r.db.QueryContext(ctx, query, userId)
 	if err != nil {
 		return nil, err
 	}
