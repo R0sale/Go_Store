@@ -5,10 +5,19 @@ import (
 	"catalog-service/internal/db"
 	"catalog-service/internal/handlers"
 	"catalog-service/internal/service"
+	"catalog-service/internal/validators"
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/go-playground/validator/v10"
 )
+
+var validate *validator.Validate
+
+func init() {
+	validate = validator.New()
+}
 
 func main() {
 	mux := http.NewServeMux()
@@ -27,9 +36,11 @@ func main() {
 
 	service := service.NewService(repository)
 
-	catalogHandler := handlers.NewCatalogHandler(service)
+	itemValidator := validators.NewItemValidator(validate)
+	catalogHandler := handlers.NewCatalogHandler(service, itemValidator)
 
 	mux.HandleFunc("GET /api/catalog/{userId}", catalogHandler.HandleGetCatalog)
+	mux.HandleFunc("POST /api/catalog", catalogHandler.HandleAddToCatalog)
 
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		fmt.Print("Couldnt run the server")
