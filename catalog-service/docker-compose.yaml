@@ -1,0 +1,14 @@
+services:
+  postgre_db:
+    image: postgres:latest
+    container_name: postgresql_db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: myPa!!w0rd
+    volumes:
+      - postresql_db_data:/var/lib/pgsql
+    
+volumes:
+  postresql_db_data:

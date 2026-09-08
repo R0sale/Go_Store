@@ -5,7 +5,7 @@ import (
 	"context"
 )
 
-func (s *service) GetCatalog(ctx context.Context, userId int) ([]models.Item, error) {
-	items, err := s.repository.GetCatalog(ctx, userId)
+func (s *service) GetCatalog(ctx context.Context) ([]models.Item, error) {
+	items, err := s.repository.GetCatalog(ctx)
 	return items, err
 }

@@ -13,9 +13,9 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	cfg, err := config.LoadConfig(`D:\go_store\Go_Store\catalog-service\config`)
+	cfg, err := config.LoadConfig(`C:\go\go_store\catalog-service\config`)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatal(err.Error())
 	}
 
 	database, err := db.ConfigureDb(cfg)
