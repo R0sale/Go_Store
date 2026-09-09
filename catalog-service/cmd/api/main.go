@@ -11,6 +11,7 @@ import (
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/rs/cors"
 )
 
 var validate *validator.Validate
@@ -39,10 +40,19 @@ func main() {
 	itemValidator := validators.NewItemValidator(validate)
 	catalogHandler := handlers.NewCatalogHandler(service, itemValidator)
 
-	mux.HandleFunc("GET /api/catalog/{userId}", catalogHandler.HandleGetCatalog)
+	mux.HandleFunc("GET /api/catalog/", catalogHandler.HandleGetCatalog)
 	mux.HandleFunc("POST /api/catalog", catalogHandler.HandleAddToCatalog)
 
-	if err := http.ListenAndServe(":8080", mux); err != nil {
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:5173"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"*"},
+		AllowCredentials: true,
+	})
+
+	handler := c.Handler(mux)
+
+	if err := http.ListenAndServe(":8080", handler); err != nil {
 		fmt.Print("Couldnt run the server")
 	}
 }

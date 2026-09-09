@@ -1,8 +1,8 @@
 interface catalogItem {
-    id: number;
-    name: string;
-    price: number;
-    imageUrl: string;
+    Id: number;
+    Name: string;
+    Price: number;
+    ImageUrl: string;
 }
 
 export type item =  catalogItem | null
