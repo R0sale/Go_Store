@@ -14,7 +14,7 @@ type Config struct {
 		User     string `mapstruct:"user"`
 		Password string `mapstruct:"password"`
 		DbName   string `mapstruct:"dbname"`
-	} `mapstructure:database`
+	} `mapstructure:"database"`
 }
 
 func LoadConfig(path string) (*Config, error) {
@@ -28,7 +28,7 @@ func LoadConfig(path string) (*Config, error) {
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(path)
 
-	viper.SetEnvKeyReplacer(strings.NewReplacer("_", "."))
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {

@@ -1,7 +1,10 @@
 package handlers
 
-import "user-service/internal/dto"
+import (
+	"context"
+	"user-service/internal/dto"
+)
 
 type service interface {
-	AddUser(user dto.CreateUserDto) error
+	AddUser(ctx context.Context, user dto.CreateUserDto) error
 }
