@@ -3,25 +3,20 @@ import type { item } from "../models/item"
 import { useState } from "react"
 import { Catalog } from "../components/Catalog"
 import { Header } from "../components/Header"
+import { newApiService } from "../services/api_service"
+import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary"
 
 
 export const loadCatalogItems = async (): Promise<item[] | null> => {
-    console.log(import.meta.env.VITE_BASE_URL + "/api/catalog")
+    const apiService = newApiService()
 
-    const response = await fetch(import.meta.env.VITE_BASE_URL + "/api/catalog", {
-        method: "GET",
-        credentials: "include"
-    })
+    const { ok, response } = await apiService.apiCall(import.meta.env.VITE_BASE_URL + "/api/catalog", "GET")
 
-    if (!response.ok) {
-        return null
+    if (!ok) {
+        throw new Error("Couldn't load Catalog items for main page")
     }
 
-    const result = await response.json() as item[]
-
-    console.log(result)
-
-    return result
+    return response as item[]
 }
 
 export const MainPage = () => {
@@ -29,9 +24,13 @@ export const MainPage = () => {
     const [catalogItems, setCatalogItems] = useState<item[] | null>(items)
 
     return (
-        <div className="min-h-screen bg-slate-50">
-            <Header />
-            <Catalog items={catalogItems}/>
-        </div>
+        <ErrorBoundary fallback={<p>Sorry</p>}>
+            <div className="min-h-screen bg-slate-50">
+                <Header />
+                <ErrorBoundary fallback={<p>Sorry, cant load anything</p>}>
+                    <Catalog items={catalogItems}/>
+                </ErrorBoundary>
+            </div>
+        </ErrorBoundary>
     )
 }
