@@ -4,12 +4,14 @@ import './index.css'
 import { loadCatalogItems } from './pages/MainPage.tsx'
 import { MainPage } from './pages/MainPage.tsx'
 import { createBrowserRouter, RouterProvider } from "react-router"
+import { Fallback } from './components/ErrorBoundary/GlobalFallback.tsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
     loader: loadCatalogItems,
-    Component: MainPage
+    Component: MainPage,
+    errorElement: <Fallback />
   }
 ])
 
