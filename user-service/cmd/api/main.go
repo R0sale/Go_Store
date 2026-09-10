@@ -22,11 +22,12 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	repository := db.NewRepository(database)
+	repository := db.NewRepository(database, *cfg)
 	service := services.NewUserService(repository)
 	handler := handlers.NewUserHandler(service)
 
 	mux.HandleFunc("POST /api/users", handler.HandleAddUser)
+	mux.HandleFunc("POST /api/users/login", handler.HandleLoginUser)
 
 	err = http.ListenAndServe(":8081", mux)
 	if err != nil {

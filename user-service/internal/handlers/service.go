@@ -7,4 +7,5 @@ import (
 
 type service interface {
 	AddUser(ctx context.Context, user dto.CreateUserDto) error
+	LoginUser(ctx context.Context, user dto.LoginUserDto) (string, error)
 }

@@ -15,6 +15,10 @@ type Config struct {
 		Password string `mapstruct:"password"`
 		DbName   string `mapstruct:"dbname"`
 	} `mapstructure:"database"`
+
+	SecretKey struct {
+		Key string `mapstruct:"key"`
+	} `mapstructure:"secretkey"`
 }
 
 func LoadConfig(path string) (*Config, error) {

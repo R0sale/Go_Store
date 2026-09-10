@@ -1,13 +1,18 @@
 package db
 
-import "database/sql"
+import (
+	"database/sql"
+	"user-service/internal/config"
+)
 
 type repository struct {
-	db *sql.DB
+	db  *sql.DB
+	cfg config.Config
 }
 
-func NewRepository(database *sql.DB) *repository {
+func NewRepository(database *sql.DB, config config.Config) *repository {
 	return &repository{
-		db: database,
+		db:  database,
+		cfg: config,
 	}
 }
