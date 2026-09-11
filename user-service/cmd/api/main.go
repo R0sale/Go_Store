@@ -28,7 +28,7 @@ func main() {
 
 	mux.HandleFunc("POST /api/users", handler.HandleAddUser)
 
-	err = http.ListenAndServe(":8081", mux)
+	err = http.ListenAndServe(cfg.Server.Port, mux)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

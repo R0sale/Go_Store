@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/rs/cors"
@@ -52,7 +53,15 @@ func main() {
 
 	handler := c.Handler(mux)
 
-	if err := http.ListenAndServe(":8080", handler); err != nil {
+	server := &http.Server{
+		Addr:         fmt.Sprintf(":%d", cfg.Server.Port),
+		Handler:      handler,
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 30 * time.Second,
+	}
+
+	if err := server.ListenAndServe(); err != nil {
 		fmt.Print("Couldnt run the server")
 	}
 }

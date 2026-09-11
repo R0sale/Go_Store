@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/joho/godotenv"
@@ -22,12 +23,14 @@ type Config struct {
 	} `mapstructure:"database"`
 }
 
-func LoadConfig(configPath string) (*Config, error) {
+func LoadConfig() (*Config, error) {
 	var cfg Config
 
 	if err := godotenv.Load(); err != nil {
 		return nil, fmt.Errorf("couldn't load env variables")
 	}
+
+	configPath := os.Getenv("CONFIG_PATH")
 
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
