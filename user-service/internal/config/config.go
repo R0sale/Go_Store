@@ -8,6 +8,10 @@ import (
 )
 
 type Config struct {
+	Server struct {
+		Port string `mapstruct:"port"`
+	} `mapstructure:"server"`
+
 	Database struct {
 		Host     string `mapstruct:"host"`
 		Port     int    `mapstruct:"port"`
