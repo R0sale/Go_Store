@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -10,7 +11,7 @@ import (
 
 type Config struct {
 	Server struct {
-		Port string `mapstruct:"port"`
+		Port int `mapstruct:"port"`
 	} `mapstructure:"server"`
 
 	Database struct {
@@ -20,17 +21,22 @@ type Config struct {
 		Password string `mapstruct:"password"`
 		DbName   string `mapstruct:"dbname"`
 	} `mapstructure:"database"`
+
+	SecretKey struct {
+		Key string `mapstruct:"key"`
+	} `mapstructure:"secretkey"`
 }
 
 func LoadConfig() (*Config, error) {
 	var cfg Config
 
-	if err := godotenv.Load(); err != nil {
+	if err := godotenv.Overload(); err != nil {
 		return nil, err
 	}
 
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
+	fmt.Println(os.Getenv("CONFIG_PATH"))
 	viper.AddConfigPath(os.Getenv("CONFIG_PATH"))
 
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
