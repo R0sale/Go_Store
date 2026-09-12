@@ -10,15 +10,15 @@ import (
 )
 
 func (r repository) LoginUser(ctx context.Context, user models.User) (string, error) {
-	var exist bool
-	query := `SELECT EXISTS (SELECT 1 FROM users WHERE email = $1 AND password = $2)`
+	var passwordHash string
+	query := `SELECT password FROM users WHERE email = $1`
 
-	passwordHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
-	if err != nil {
+	if err := r.db.QueryRowContext(ctx, query, user.Email).Scan(&passwordHash); err != nil {
 		return "", err
 	}
 
-	if err := r.db.QueryRowContext(ctx, query, user.Email, passwordHash).Scan(&exist); err != nil {
+	err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(user.Password))
+	if err != nil {
 		return "", err
 	}
 

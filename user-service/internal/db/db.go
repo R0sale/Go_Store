@@ -9,7 +9,7 @@ import (
 )
 
 func ConfigureDb(cfg *config.Config) (*sql.DB, error) {
-	dsn := fmt.Sprintf(`host=%s port=%d password=%s user=%s dbname=%s`, cfg.Database.Host, cfg.Database.Port, cfg.Database.Password, cfg.Database.User, cfg.Database.DbName)
+	dsn := fmt.Sprintf(`host=%s port=%d password='%s' user=%s dbname=%s`, cfg.Database.Host, cfg.Database.Port, cfg.Database.Password, cfg.Database.User, cfg.Database.DbName)
 
 	db, err := sql.Open("pgx", dsn)
 	if err != nil {

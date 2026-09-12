@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     errorElement: <Fallback />
   },
   {
-    path: "login",
+    path: "/login",
     Component: LoginPage
   }
 ])
