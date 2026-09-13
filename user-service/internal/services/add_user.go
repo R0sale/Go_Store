@@ -20,12 +20,16 @@ func (s service) AddUser(ctx context.Context, user dto.CreateUserDto) error {
 		return err
 	}
 
+	s.wg.Add(1)
+
 	go func() {
 		defer func() {
 			if err := recover(); err != nil {
 				fmt.Printf("couldnt send the email err: %s\n", err)
 			}
 		}()
+
+		defer s.wg.Done()
 
 		err := s.mailer.Send(user.Email, "user_welcome.tmpl", user)
 		if err != nil {

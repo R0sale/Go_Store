@@ -6,9 +6,13 @@ import (
 	"catalog-service/internal/handlers"
 	"catalog-service/internal/service"
 	"catalog-service/internal/validators"
+	"context"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -61,7 +65,27 @@ func main() {
 		WriteTimeout: 30 * time.Second,
 	}
 
+	shutdown := make(chan error)
+
+	go func() {
+		quit := make(chan os.Signal, 1)
+		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+		s := <-quit
+		fmt.Println(s.String())
+
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+		defer cancel()
+
+		shutdown <- server.Shutdown(ctx)
+	}()
+
 	if err := server.ListenAndServe(); err != nil {
-		fmt.Print("Couldnt run the server")
+		fmt.Print(err.Error())
+	}
+
+	err = <-shutdown
+	if err != nil {
+		log.Fatal(err.Error())
 	}
 }
