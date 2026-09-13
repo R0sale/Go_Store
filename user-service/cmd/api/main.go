@@ -8,6 +8,7 @@ import (
 	"user-service/internal/config"
 	"user-service/internal/db"
 	"user-service/internal/handlers"
+	"user-service/internal/mailer"
 	"user-service/internal/services"
 
 	"github.com/rs/cors"
@@ -26,8 +27,10 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	repository := db.NewRepository(database, *cfg)
-	service := services.NewUserService(repository)
+	mailer := mailer.New(cfg.Smtp.Host, cfg.Smtp.Port, cfg.Smtp.Username, cfg.Smtp.Password, "kvusov@bk.ru")
+
+	repository := db.NewRepository(database)
+	service := services.NewUserService(repository, mailer, *cfg)
 	handler := handlers.NewUserHandler(service)
 
 	mux.HandleFunc("POST /api/users", handler.HandleAddUser)

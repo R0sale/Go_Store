@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"time"
 	"user-service/internal/dto"
-	"user-service/internal/responses"
 )
 
 func (h userHandler) HandleLoginUser(w http.ResponseWriter, r *http.Request) {
@@ -21,12 +20,22 @@ func (h userHandler) HandleLoginUser(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	token, err := h.service.LoginUser(ctx, user)
+	dbUser, token, err := h.service.LoginUser(ctx, user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	cookie := http.Cookie{
+		Name:     "jwt",
+		Value:    token,
+		MaxAge:   time.Now().Hour(),
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+	}
+
+	http.SetCookie(w, &cookie)
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(responses.Token{Token: token})
+	json.NewEncoder(w).Encode(dbUser)
 }

@@ -25,6 +25,13 @@ type Config struct {
 	SecretKey struct {
 		Key string `mapstruct:"key"`
 	} `mapstructure:"secretkey"`
+
+	Smtp struct {
+		Host     string `mapstruct:"host"`
+		Port     int    `mapstruct:"port"`
+		Username string `mapstruct:"username"`
+		Password string `mapstruct:"password"`
+	} `mapstructure:"smtp"`
 }
 
 func LoadConfig() (*Config, error) {

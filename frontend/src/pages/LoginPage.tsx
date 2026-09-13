@@ -28,8 +28,9 @@ export const LoginPage = () => {
             password: password
         }
 
-        console.log(import.meta.env.VITE_USERS_URL)
         const { ok, response } = await apiService.apiCall(import.meta.env.VITE_USERS_URL + "/api/users/login", "POST", body)
+
+        console.log(ok)
 
         if (!ok) {
             setIsValid(false)
@@ -52,7 +53,7 @@ export const LoginPage = () => {
                 <label htmlFor="email" className="-mb-3 block text-sm font-medium text-gray-700">Email</label>
                 <input onChange={(e) => inputEmail(e)} name="email" className={`rounded-lg border ${!isValid && "border-red-400 border-2"} border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500`} />
                 <label htmlFor="password" className="-mb-3 block text-sm font-medium text-gray-700">Password</label>
-                <input onChange={(e) => inputPassword(e)} name="password" className={`rounded-lg border ${!isValid && "border-red-400 border-2"} border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500`} />
+                <input type="password" onChange={(e) => inputPassword(e)} name="password" className={`rounded-lg border ${!isValid && "border-red-400 border-2"} border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500`} />
 
                 {!isValid && <p className="-mb-3 text-red-400 mt-0 pt-0 block text-sm font-medium">Wrong email or password</p>}
 
