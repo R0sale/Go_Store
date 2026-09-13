@@ -10,7 +10,7 @@ import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary"
 export const loadCatalogItems = async (): Promise<item[] | null> => {
     const apiService = newApiService()
 
-    const { ok, response } = await apiService.apiCall(import.meta.env.VITE_BASE_URL + "/api/catalog", "GET")
+    const { ok, response } = await apiService.apiCall(import.meta.env.VITE_CATALOG_URL + "/api/catalog", "GET")
 
     if (!ok) {
         throw new Error("Couldn't load Catalog items for main page")

@@ -1,6 +1,8 @@
 package db
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 type repository struct {
 	db *sql.DB

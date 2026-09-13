@@ -7,3 +7,12 @@ database:
   user: ""
   password: ""
   dbname: ""
+
+secretkey:
+  key: ""
+
+smtp:
+  host: sandbox.smtp.mailtrap.io
+  port: 25
+  username: 7585fd2c9adbee
+  password: 680a244debb2ec

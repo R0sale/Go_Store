@@ -24,7 +24,7 @@ func init() {
 func main() {
 	mux := http.NewServeMux()
 
-	cfg, err := config.LoadConfig(`C:\go\go_store\catalog-service\config`)
+	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Fatal(err.Error())
 	}

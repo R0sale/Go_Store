@@ -2,8 +2,10 @@ package db
 
 import (
 	"catalog-service/internal/config"
+	"context"
 	"database/sql"
 	"fmt"
+	"time"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
@@ -16,7 +18,10 @@ func ConfigureDb(cfg *config.Config) (*sql.DB, error) {
 		return nil, fmt.Errorf("couldn't open the sql driver")
 	}
 
-	if err := db.Ping(); err != nil {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	if err := db.PingContext(ctx); err != nil {
 		return nil, fmt.Errorf("couldn't ping the db, %v", err)
 	}
 
