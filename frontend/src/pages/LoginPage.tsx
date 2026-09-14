@@ -30,8 +30,6 @@ export const LoginPage = () => {
 
         const { ok, response } = await apiService.apiCall(import.meta.env.VITE_USERS_URL + "/api/users/login", "POST", body)
 
-        console.log(ok)
-
         if (!ok) {
             setIsValid(false)
             return

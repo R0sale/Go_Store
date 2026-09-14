@@ -2,9 +2,8 @@ import { useLoaderData } from "react-router"
 import type { item } from "../models/item"
 import { useState } from "react"
 import { Catalog } from "../components/Catalog"
-import { Header } from "../components/Header"
 import { newApiService } from "../services/api_service"
-import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary"
+import { Layout } from "../components/Layout"
 
 
 export const loadCatalogItems = async (): Promise<item[] | null> => {
@@ -24,13 +23,8 @@ export const MainPage = () => {
     const [catalogItems, setCatalogItems] = useState<item[] | null>(items)
 
     return (
-        <ErrorBoundary fallback={<p>Sorry</p>}>
-            <div className="min-h-screen bg-slate-50">
-                <Header />
-                <ErrorBoundary fallback={<p>Sorry, cant load anything</p>}>
-                    <Catalog items={catalogItems}/>
-                </ErrorBoundary>
-            </div>
-        </ErrorBoundary>
+        <Layout>
+            <Catalog items={catalogItems}/>
+        </Layout>
     )
 }

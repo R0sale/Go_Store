@@ -10,7 +10,7 @@ export const Catalog = (props: CatalogProps) => {
             {props.items?.map(item =>
                 <div
                     key={item?.Id}
-                    className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition cursor-pointer duration-300 hover:-translate-y-1 hover:shadow-xl"
                 >
                     <div className="aspect-square w-full overflow-hidden bg-slate-100">
                         <img
