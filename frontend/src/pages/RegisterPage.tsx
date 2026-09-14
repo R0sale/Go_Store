@@ -35,7 +35,7 @@ export const RegisterPage = () => {
             name: name
         }
 
-        const { ok, response } = await apiService.apiCall(import.meta.env.VITE_USERS_URL + "/register", "POST", body)
+        const { ok, response } = await apiService.apiCall(import.meta.env.VITE_USERS_URL + "/api/users/register", "POST", body)
 
         if (!ok) {
             setIsValid(false)

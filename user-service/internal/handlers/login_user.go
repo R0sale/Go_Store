@@ -26,15 +26,7 @@ func (h userHandler) HandleLoginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookie := http.Cookie{
-		Name:     "jwt",
-		Value:    token,
-		MaxAge:   time.Now().Hour(),
-		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
-	}
-
-	http.SetCookie(w, &cookie)
+	h.AddJwtHttpOnlyCookie(w, token)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(dbUser)
