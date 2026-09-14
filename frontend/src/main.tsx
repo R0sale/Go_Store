@@ -6,6 +6,7 @@ import { MainPage } from './pages/MainPage.tsx'
 import { createBrowserRouter, RouterProvider } from "react-router"
 import { Fallback } from './components/ErrorBoundary/GlobalFallback.tsx'
 import { LoginPage } from './pages/LoginPage.tsx'
+import { RegisterPage } from './pages/RegisterPage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     Component: LoginPage
+  },
+  {
+    path: "/register",
+    Component: RegisterPage
   }
 ])
 

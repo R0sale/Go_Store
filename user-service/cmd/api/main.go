@@ -40,7 +40,7 @@ func main() {
 	service := services.NewUserService(repository, mailer, *cfg, &wg)
 	handler := handlers.NewUserHandler(service)
 
-	mux.HandleFunc("POST /api/users", handler.HandleAddUser)
+	mux.HandleFunc("POST /api/users/register", handler.HandleAddUser)
 	mux.HandleFunc("POST /api/users/login", handler.HandleLoginUser)
 
 	c := cors.New(cors.Options{

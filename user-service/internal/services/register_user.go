@@ -3,11 +3,14 @@ package services
 import (
 	"context"
 	"fmt"
+	"time"
 	"user-service/internal/dto"
 	"user-service/internal/models"
+
+	"github.com/golang-jwt/jwt/v5"
 )
 
-func (s service) AddUser(ctx context.Context, user dto.CreateUserDto) error {
+func (s service) AddUser(ctx context.Context, user dto.CreateUserDto) (models.User, string, error) {
 	repoUser := models.User{
 		Name:     user.Name,
 		Email:    user.Email,
@@ -15,9 +18,9 @@ func (s service) AddUser(ctx context.Context, user dto.CreateUserDto) error {
 		Password: user.Password,
 	}
 
-	err := s.repository.AddUser(ctx, repoUser)
+	newUser, err := s.repository.AddUser(ctx, repoUser)
 	if err != nil {
-		return err
+		return models.User{}, "", err
 	}
 
 	s.wg.Add(1)
@@ -37,5 +40,16 @@ func (s service) AddUser(ctx context.Context, user dto.CreateUserDto) error {
 		}
 	}()
 
-	return nil
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"email": newUser.Email,
+		"image": newUser.ImageUrl,
+		"exp":   time.Now().Add(time.Hour).Unix(),
+	})
+
+	tokenString, err := token.SignedString([]byte(s.cfg.SecretKey.Key))
+	if err != nil {
+		return models.User{}, "", err
+	}
+
+	return newUser, tokenString, nil
 }

@@ -6,6 +6,6 @@ import (
 )
 
 type repository interface {
-	AddUser(ctx context.Context, user models.User) error
+	AddUser(ctx context.Context, user models.User) (models.User, error)
 	LoginUser(ctx context.Context, user models.User) (models.User, error)
 }

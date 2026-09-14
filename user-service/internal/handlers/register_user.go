@@ -20,9 +20,14 @@ func (h userHandler) HandleAddUser(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 3*time.Second)
 	defer cancel()
 
-	err = h.service.AddUser(ctx, user)
+	newUser, token, err := h.service.AddUser(ctx, user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	h.AddJwtHttpOnlyCookie(w, token)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(newUser)
 }
