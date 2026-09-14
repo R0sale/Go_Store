@@ -1,8 +1,8 @@
 import type { User } from "../models/user"
-import { newApiService } from "../services/api_service"
+import { newApiService } from "../services/api"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router"
-import { useUser } from "../stores/user_store"
+import { useUser } from "../stores/user"
 
 export const LoginPage = () => {
     const [isValid, setIsValid] = useState<boolean>(true)

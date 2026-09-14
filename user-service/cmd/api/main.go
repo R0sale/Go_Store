@@ -75,7 +75,7 @@ func main() {
 		shutdown <- server.Shutdown(ctx)
 	}()
 
-	err = server.ListenAndServe()
+	err = server.ListenAndServeTLS(os.Getenv("CERT_FILE"), os.Getenv("KEY_FILE"))
 	if err != nil {
 		fmt.Println(err.Error())
 	}

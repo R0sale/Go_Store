@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"net/http"
-	"time"
 )
 
 type userHandler struct {
@@ -19,9 +18,11 @@ func (h userHandler) AddJwtHttpOnlyCookie(w http.ResponseWriter, token string) {
 	cookie := http.Cookie{
 		Name:     "jwt",
 		Value:    token,
-		MaxAge:   time.Now().Hour(),
+		MaxAge:   3600,
 		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
+		Path:     "/",
+		Secure:   true,
+		SameSite: http.SameSiteNoneMode,
 	}
 
 	http.SetCookie(w, &cookie)

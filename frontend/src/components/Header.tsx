@@ -1,4 +1,4 @@
-import { useUser } from "../stores/user_store"
+import { useUser } from "../stores/user"
 import guest from "../assets/guest.png"
 import { Package, ShoppingBasket } from "lucide-react"
 import { useNavigate } from "react-router"

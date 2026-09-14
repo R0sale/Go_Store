@@ -4,6 +4,7 @@ import (
 	"catalog-service/internal/config"
 	"catalog-service/internal/db"
 	"catalog-service/internal/handlers"
+	"catalog-service/internal/handlers/middlewares"
 	"catalog-service/internal/service"
 	"catalog-service/internal/validators"
 	"context"
@@ -45,8 +46,8 @@ func main() {
 	itemValidator := validators.NewItemValidator(validate)
 	catalogHandler := handlers.NewCatalogHandler(service, itemValidator)
 
-	mux.HandleFunc("GET /api/catalog/", catalogHandler.HandleGetCatalog)
-	mux.HandleFunc("POST /api/catalog", catalogHandler.HandleAddToCatalog)
+	mux.HandleFunc("POST /api/get/catalog", middlewares.AuthenticateMiddleware(catalogHandler.HandleGetCatalog, cfg))
+	mux.HandleFunc("POST /api/catalog", middlewares.AuthenticateMiddleware(catalogHandler.HandleAddToCatalog, cfg))
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:5173"},
@@ -80,8 +81,8 @@ func main() {
 		shutdown <- server.Shutdown(ctx)
 	}()
 
-	if err := server.ListenAndServe(); err != nil {
-		fmt.Print(err.Error())
+	if err := server.ListenAndServeTLS(os.Getenv("CERT_FILE"), os.Getenv("KEY_FILE")); err != nil {
+		fmt.Print("listen server " + err.Error())
 	}
 
 	err = <-shutdown

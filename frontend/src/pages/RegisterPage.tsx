@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router"
-import { newApiService } from "../services/api_service"
+import { newApiService } from "../services/api"
 import type { User } from "../models/user"
-import { useUser } from "../stores/user_store"
+import { useUser } from "../stores/user"
 
 
 export const RegisterPage = () => {
